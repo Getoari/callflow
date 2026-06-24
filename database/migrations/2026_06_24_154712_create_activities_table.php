@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function(Blueprint $table){
+        Schema::create('activities', function (Blueprint $table) {
 
             $table->id();
+
 
             $table->foreignId('lead_id')
                 ->constrained()
@@ -22,7 +23,9 @@ return new class extends Migration
 
             $table->string('type');
 
+
             $table->text('notes');
+
 
             $table->timestamps();
 

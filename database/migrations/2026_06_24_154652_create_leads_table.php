@@ -36,7 +36,8 @@ return new class extends Migration
 
             $table->integer('score')->default(0);
 
-            $table->enum('temperature',[
+
+            $table->enum('temperature', [
                 'cold',
                 'warm',
                 'hot'
@@ -59,7 +60,7 @@ return new class extends Migration
 
 
             $table->timestamps();
-        }); 
+        });
     }
 
     /**

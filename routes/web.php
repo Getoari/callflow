@@ -29,17 +29,17 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-Route::get(
-    '/',
-    DashboardController::class
-)
-->middleware('auth');
+// Route::get(
+//     '/',
+//     DashboardController::class
+// )
+// ->middleware('auth');
 
-Route::resource(
-    'leads',
-    LeadController::class
-)
-->middleware('auth');
+// Route::resource(
+//     'leads',
+//     LeadController::class
+// )
+// ->middleware('auth');
 
 
 require __DIR__.'/auth.php';
