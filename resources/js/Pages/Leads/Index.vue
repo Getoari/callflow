@@ -62,6 +62,14 @@ v-for="lead in leads.data"
 {{lead.status}}
 </td>
 
+<td>
+    <Link
+        :href="route('leads.show', lead.id)"
+        class="text-blue-600 hover:underline"
+    >
+        View
+    </Link>
+</td>
 
 </tr>
 

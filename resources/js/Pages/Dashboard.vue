@@ -1,6 +1,7 @@
 <script setup>
 
 import ScoreBadge from '@/Components/ScoreBadge.vue'
+import { Link } from '@inertiajs/vue3'
 
 
 defineProps({
@@ -24,7 +25,36 @@ recentLeads:Array
 CallFlow Dashboard
 </h1>
 
+<nav class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl px-6 py-4">
 
+            <div class="flex items-center gap-6">
+
+                <Link
+                    :href="route('dashboard')"
+                    class="text-gray-600 hover:text-blue-600 transition"
+                    :class="{
+                        'text-blue-600 font-semibold': route().current('dashboard')
+                    }"
+                >
+                    Dashboard
+                </Link>
+
+
+                <Link
+                    :href="route('leads.index')"
+                    class="text-gray-600 hover:text-blue-600 transition"
+                    :class="{
+                        'text-blue-600 font-semibold': route().current('leads.*')
+                    }"
+                >
+                    Leads
+                </Link>
+
+            </div>
+
+        </div>
+    </nav>
 
 <div class="grid grid-cols-4 gap-4 mt-6">
 

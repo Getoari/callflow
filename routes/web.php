@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardController;
 Route::get(
     '/',
     DashboardController::class
-);
+)->name('dashboard');
 
 Route::resource(
     'leads',
