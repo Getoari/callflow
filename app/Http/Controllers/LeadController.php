@@ -2,63 +2,156 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Lead;
+use App\Services\LeadScoringService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 
 class LeadController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+public function index(Request $request)
+{
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    $leads = Lead::query()
+        ->when(
+            $request->search,
+            function($query,$search){
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+                $query->where(
+                    'first_name',
+                    'like',
+                    "%$search%"
+                )
+                ->orWhere(
+                    'company',
+                    'like',
+                    "%$search%"
+                );
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            }
+        )
+        ->latest()
+        ->paginate(10);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+
+    return Inertia::render(
+        'Leads/Index',
+        [
+            'leads'=>$leads,
+            'filters'=>$request->only('search')
+        ]
+    );
+
+}
+
+
+
+public function create()
+{
+    return Inertia::render(
+        'Leads/Create'
+    );
+}
+
+
+
+public function store(
+    Request $request,
+    LeadScoringService $scorer
+)
+{
+
+    $data=$request->validate([
+
+        'first_name'=>'required',
+        'last_name'=>'required',
+
+        'email'=>'required|email',
+
+        'company'=>'nullable',
+
+        'phone'=>'nullable',
+
+        'opportunity_value'=>'nullable|numeric',
+
+        'notes'=>'nullable'
+
+    ]);
+
+
+
+    $lead=Lead::create($data);
+
+
+
+    $score=$scorer->calculate($lead);
+
+
+    $lead->update([
+
+        'score'=>$score,
+
+        'temperature'=>
+            $scorer->temperature($score)
+
+    ]);
+
+
+
+    return redirect()
+        ->route('leads.index');
+
+}
+
+
+
+
+public function show(Lead $lead)
+{
+
+    return Inertia::render(
+        'Leads/Show',
+        [
+            'lead'=>
+                $lead->load('activities')
+        ]
+    );
+
+}
+
+
+
+public function destroy(Lead $lead)
+{
+
+    $lead->delete();
+
+
+    return back();
+
+}
+
+
+
+public function update(
+    Request $request,
+    Lead $lead
+)
+{
+
+    $lead->update(
+        $request->all()
+    );
+
+
+    return back();
+
+}
+
+
+
 }

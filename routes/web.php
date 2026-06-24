@@ -7,14 +7,15 @@ use Inertia\Inertia;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get(
+    '/',
+    DashboardController::class
+);
+
+Route::resource(
+    'leads',
+    LeadController::class
+);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -25,21 +26,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-require __DIR__.'/auth.php';
-
-
-// Route::get(
-//     '/',
-//     DashboardController::class
-// )
-// ->middleware('auth');
-
-// Route::resource(
-//     'leads',
-//     LeadController::class
-// )
-// ->middleware('auth');
-
 
 require __DIR__.'/auth.php';
