@@ -89,11 +89,146 @@ Won / Lost
 - NPM
 
 
+# Setup
+
+## Requirements
+
+Make sure you have the following installed:
+
+* PHP 8.2+
+* Composer
+* Node.js
+* NPM
+* Git
+
 ## Installation
 
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
 git clone <repository-url>
 
 cd callflow
+```
+
+### 2. Install backend dependencies
+
+Install Laravel/PHP dependencies using Composer:
+
+```bash
+composer install
+```
+
+### 3. Configure environment file
+
+Copy the example environment file:
+
+```bash
+cp .env.example .env
+```
+
+Generate the Laravel application key:
+
+```bash
+php artisan key:generate
+```
+
+### 4. Configure database
+
+This project uses SQLite.
+
+Create the database file:
+
+```bash
+touch database/database.sqlite
+```
+
+Update your `.env` file:
+
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+```
+
+### 5. Run database migrations and seed data
+
+Create the required database tables:
+
+```bash
+php artisan migrate
+```
+
+(Optional) Populate the database with sample data:
+
+```bash
+php artisan db:seed
+```
+
+### 6. Install frontend dependencies
+
+Install Node packages:
+
+```bash
+npm install
+```
+
+### 7. Build frontend assets
+
+For development:
+
+```bash
+npm run dev
+```
+
+For production build:
+
+```bash
+npm run build
+```
+
+### 8. Start the Laravel server
+
+Run the application:
+
+```bash
+php artisan serve
+```
+
+The application will be available at:
+
+```
+http://127.0.0.1:8000
+```
+
+## Running the project
+
+You need two terminals:
+
+Terminal 1:
+
+```bash
+php artisan serve
+```
+
+Terminal 2:
+
+```bash
+npm run dev
+```
+
+## Testing
+
+Run Laravel tests:
+
+```bash
+php artisan test
+```
+
+## Project Structure
+
+```
+app/          - Laravel backend logic
+resources/    - Vue/Inertia frontend
+database/     - Migrations and seeders
+routes/       - Application routes
+```
